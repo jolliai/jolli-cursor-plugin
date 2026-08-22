@@ -24,7 +24,7 @@ security recipe and the dist resolver and will not produce valid output.
 Run:
 
 ```bash
-"$HOME/.jolli/jollimemory/run-cli" auth logout
+JOLLI_INVOKED_VIA=skill:logout "$HOME/.jolli/jollimemory/run-cli" auth logout
 ```
 
 Report the command output, then call the Jolli Memory `status` tool when
@@ -36,5 +36,8 @@ available. Explain the provider-aware result:
 - `anthropic` generation continues when its preserved Anthropic key exists.
 - `jolli` generation stops unless another Jolli API key remains configured.
 
-If the dispatcher does not exist, ask the user to run **Developer: Reload Window**,
-start a new chat so the Jolli `sessionStart` hook runs, and retry.
+If `$HOME/.jolli/jollimemory/run-cli` does not exist, the plugin's `sessionStart`
+hook has not run on this machine yet — that hook is what writes it. Ask the user to
+**quit Cursor completely (⌘Q) and reopen it, then start a new chat**, and retry. A
+freshly installed plugin's hooks are not registered until the app has been fully
+restarted, so **Developer: Reload Window** or another chat is not enough (measured).

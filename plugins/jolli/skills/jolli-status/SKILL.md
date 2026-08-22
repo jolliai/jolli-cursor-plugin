@@ -19,7 +19,7 @@ description: Diagnose Jolli Memory installation, provider, account, hooks, queue
    - `anthropic`: requires an Anthropic API key.
    - unset: requires a usable provider credential.
 
-If `status` is unavailable, run `"$HOME/.jolli/jollimemory/run-cli" status` and summarize it. Do not
+If `status` is unavailable, run `JOLLI_INVOKED_VIA=skill:status "$HOME/.jolli/jollimemory/run-cli" status` and summarize it. Do not
 list branch memories; route those requests to `/jolli-recall` or `/jolli-search`.
 
 ### Shell prerequisite
@@ -37,3 +37,15 @@ https://git-scm.com/download/win and retry."
 Do NOT fall back to `npm run`, `npx`, `node` directly, PowerShell-native
 commands, WSL bash, or any workspace-local script — those bypass the
 security recipe and the dist resolver and will not produce valid output.
+
+## If the Jolli CLI dispatcher is missing (Cursor)
+
+`$HOME/.jolli/jollimemory/run-cli` is written by this plugin's `sessionStart` hook,
+and a freshly installed plugin's hooks are not registered until Cursor has been fully
+restarted — a window reload or another chat is not enough (measured). So when that file
+does not exist, the fix is to **quit Cursor completely (⌘Q) and reopen it, then start
+a new chat**, and retry.
+
+This REPLACES any instruction above to report Jolli as not installed, or to install
+`@jolli.ai/cli` globally or the Jolli VS Code extension. You are running inside the
+Jolli plugin, so Jolli IS installed, and neither of those is the fix on this host.
